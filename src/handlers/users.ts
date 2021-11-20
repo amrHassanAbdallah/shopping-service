@@ -32,8 +32,11 @@ const create = async (_req: Request, res: Response) => {
 
         res.json(newUser)
     } catch(err) {
-        res.status(400)
-        res.json(err + user)
+        console.log(err)
+        res.status(500)
+        res.json({
+            "message":"failure happened while storing a user"
+        })
     }
 }
 
@@ -53,7 +56,9 @@ const authenticate = async (_req: Request, res: Response) => {
         res.json(u)
     } catch(err) {
         res.status(401)
-        res.json(err + user)
+        res.json({
+            "message":"invalid credentials"
+        })
     }
 }
 

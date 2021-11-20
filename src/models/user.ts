@@ -58,6 +58,7 @@ export class UserStore {
             const user = result.rows[0]
 
             conn.release()
+            user.password_digest = undefined
 
             return user
         } catch(err) {

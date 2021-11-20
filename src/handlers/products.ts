@@ -33,11 +33,10 @@ const destroy = async (req: Request, res: Response) => {
 }
 
 const productsRoutes = (app: express.Application) => {
-    const routes = app.routes("/products")
-    routes.get('/', index)
-    routes.get('/:id', show)
-    routes.post('/', create)
-    routes.delete('/', destroy)
+    app.get('/products/', index)
+    app.get('/products/:id', show)
+    app.post('/products/', create)
+    app.delete('/products/:id', destroy)
 }
 
 export default productsRoutes
