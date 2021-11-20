@@ -6,7 +6,7 @@ const userRoutes = (app: express.Application) => {
     app.get('/users', index)
     app.get('/users/{:id}', show)
     app.post('/users', create)
-    app.delete('/users', destroy)
+    app.delete('/users/{:id}', destroy)
     app.post('/users/auth', authenticate)
 }
 
