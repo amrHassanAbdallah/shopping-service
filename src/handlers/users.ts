@@ -7,7 +7,7 @@ const userRoutes = (app: express.Application) => {
     app.get('/users/{:id}', show)
     app.post('/users', create)
     app.delete('/users', destroy)
-    app.post('/users/authenticate', authenticate)
+    app.post('/users/auth', authenticate)
 }
 
 const store = new UserStore()
@@ -28,6 +28,7 @@ const create = async (_req: Request, res: Response) => {
         password: _req.body.password,
     }
     try {
+        //todo handle duplication error, return 409
         const newUser = await store.create(user)
 
         res.json(newUser)
