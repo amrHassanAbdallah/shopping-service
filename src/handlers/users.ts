@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 
 import { User, UserStore } from '../models/user'
+import DuplicateRecordErr from "../errors/DuplicateRecordErr";
 
 const userRoutes = (app: express.Application) => {
     app.get('/users', index)
@@ -28,11 +29,15 @@ const create = async (_req: Request, res: Response) => {
         password: _req.body.password,
     }
     try {
-        //todo handle duplication error, return 409
         const newUser = await store.create(user)
 
         res.json(newUser)
     } catch(err) {
+        if (err instanceof DuplicateRecordErr){
+            return res.status(err.statusCode).json({
+                message:err.message
+            })
+        }
         console.log(err)
         res.status(500)
         res.json({

@@ -1,5 +1,6 @@
 import Client from '../database'
 import bcrypt from 'bcrypt'
+import DuplicateRecordErr from "../errors/DuplicateRecordErr";
 
 const saltRounds = process.env.SALT_ROUNDS||""
 const pepper = process.env.BCRYPT_PASSWORD||""
@@ -61,7 +62,11 @@ export class UserStore {
             user.password_digest = undefined
 
             return user
-        } catch(err) {
+        } catch(err:any) {
+            //todo adjust it to be interface.
+            if (err.code == 23505){
+                throw new DuplicateRecordErr()
+            }
             throw new Error(`unable create user (${u.username}): ${err}`)
         }
     }
@@ -89,7 +94,6 @@ export class UserStore {
 
         const result = await conn.query(sql, [username])
 
-        console.log(password+pepper)
 
         if(result.rows.length) {
 
