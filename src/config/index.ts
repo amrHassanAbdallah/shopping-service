@@ -35,5 +35,6 @@ export default {
         password:process.env.POSTGRES_PASSWORD,
         database:process.env.POSTGRES_DB
     },
-    application_name:"shopping-service"
+    application_name:"shopping-service",
+    TOKEN_SECRET:process.env.TOKEN_SECRET||"hamda"
 };

@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express'
-
+import * as jwt from 'jsonwebtoken'
 import { User, UserStore } from '../models/user'
 import DuplicateRecordErr from "../errors/DuplicateRecordErr";
+import config from "../config";
+
 
 const userRoutes = (app: express.Application) => {
     app.get('/users', index)
@@ -30,8 +32,10 @@ const create = async (_req: Request, res: Response) => {
     }
     try {
         const newUser = await store.create(user)
+        res.json({
+            "token":jwt.sign({user:newUser},config.TOKEN_SECRET)
+        })
 
-        res.json(newUser)
     } catch(err) {
         if (err instanceof DuplicateRecordErr){
             return res.status(err.statusCode).json({
@@ -58,8 +62,9 @@ const authenticate = async (_req: Request, res: Response) => {
     }
     try {
         const u = await store.authenticate(user.username, user.password)
-
-        res.json(u)
+        res.json({
+            "token":jwt.sign({user:u},config.TOKEN_SECRET)
+        })
     } catch(err) {
         res.status(401)
         res.json({
