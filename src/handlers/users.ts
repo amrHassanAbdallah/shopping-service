@@ -3,13 +3,14 @@ import * as jwt from 'jsonwebtoken'
 import { User, UserStore } from '../models/user'
 import DuplicateRecordErr from "../errors/DuplicateRecordErr";
 import config from "../config";
+import checkAuth from "../middleware/checkAuth";
 
 
 const userRoutes = (app: express.Application) => {
-    app.get('/users', index)
-    app.get('/users/{:id}', show)
+    app.get('/users', checkAuth,index)
+    app.get('/users/{:id}',checkAuth, show)
     app.post('/users', create)
-    app.delete('/users/{:id}', destroy)
+    app.delete('/users/{:id}',checkAuth, destroy)
     app.post('/users/auth', authenticate)
 }
 
@@ -33,7 +34,10 @@ const create = async (_req: Request, res: Response) => {
     try {
         const newUser = await store.create(user)
         res.json({
-            "token":jwt.sign({user:newUser},config.TOKEN_SECRET)
+            "token":jwt.sign({user:newUser},config.TOKEN_SECRET,{
+                expiresIn: "1h"
+            })
+
         })
 
     } catch(err) {
@@ -63,7 +67,9 @@ const authenticate = async (_req: Request, res: Response) => {
     try {
         const u = await store.authenticate(user.username, user.password)
         res.json({
-            "token":jwt.sign({user:u},config.TOKEN_SECRET)
+            "token":jwt.sign({user:u},config.TOKEN_SECRET,{
+                expiresIn: "1h"
+            })
         })
     } catch(err) {
         res.status(401)
