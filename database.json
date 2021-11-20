@@ -1,8 +1,8 @@
 {
   "dev": {
     "driver": "pg",
-    "user": "",
-    "password": "",
+    "user": "hamda",
+    "password": "hamda",
     "host": "localhost",
     "database": "shopping-service"
   }

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jasmine-ts",
     "tsc": "tsc",
-    "start": "nodemon src/server.ts"
+    "migrate": "db-migrate up initialize",
+    "dev": "nodemon src/server.ts",
+    "start": "npm run migrate && npm run dev"
   },
   "author": "Udacity",
   "license": "ISC",
@@ -19,6 +21,7 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "db-migrate": "^1.0.0-beta.16",
+    "db-migrate-pg": "^1.2.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
