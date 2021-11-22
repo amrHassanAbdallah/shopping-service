@@ -16,7 +16,7 @@ export class UserStore {
         try {
             //@ts-ignore
             const conn = await Client.connect()
-            const sql = 'SELECT * FROM users'
+            const sql = 'SELECT id,username FROM users'
 
             const result = await conn.query(sql)
 
