@@ -8,7 +8,8 @@
     "tsc": "tsc",
     "migrate": "db-migrate up initialize",
     "dev": "nodemon src/server.ts",
-    "start": "npm run migrate && npm run dev"
+    "start": "npm run migrate && npm run dev",
+    "prod": "node ./build/server.js"
   },
   "author": "Udacity",
   "license": "ISC",

@@ -1,13 +1,17 @@
 
-FROM node:12.13.0-alpine
-RUN mkdir -p /opt/app
+FROM node:12.12.0-alpine
+RUN mkdir -p /opt/app/build
 WORKDIR /opt/app
-RUN adduser -S app
 COPY . .
 RUN npm install
-RUN chown -R app /opt/app
+
+
+CMD npm run migrate
+RUN npm run tsc
+
+RUN adduser -S app
+CMD chown -R app /opt/app
 USER app
 EXPOSE 3000
 
-RUN npm run migrate
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "prod" ]
