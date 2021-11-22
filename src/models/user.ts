@@ -9,6 +9,8 @@ export type User = {
     id?: string;
     username: string;
     password: string;
+    first_name?: string;
+    last_name?: string;
 }
 
 export class UserStore {
@@ -48,14 +50,14 @@ export class UserStore {
         try {
             // @ts-ignore
             const conn = await Client.connect()
-            const sql = 'INSERT INTO users (username, password_digest) VALUES($1, $2) RETURNING *'
+            const sql = 'INSERT INTO users (username, password_digest,first_name,last_name) VALUES($1, $2,$3,$4) RETURNING *'
 
             const hash = bcrypt.hashSync(
                 u.password + pepper,
                 parseInt(saltRounds)
             );
 
-            const result = await conn.query(sql, [u.username, hash])
+            const result = await conn.query(sql, [u.username, hash,u.first_name,u.last_name])
             const user = result.rows[0]
 
             conn.release()

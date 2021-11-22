@@ -1,6 +1,7 @@
 import express from "express";
 import * as jwt from 'jsonwebtoken';
 import config from '../config'
+import {User} from "../models/user";
 
 function checkAuth(
     req: express.Request,
@@ -17,7 +18,8 @@ function checkAuth(
     }
     try {
         let jwtPayload =  jwt.verify(token,config.TOKEN_SECRET)
-        res.locals.jwtPayload = jwtPayload;
+        let castedObj = (jwtPayload as {user :User})
+        req.headers["X-User-Id"] = castedObj.user.id
     }catch (err){
         return res.status(401).send({
             "message":"Authorization is required"

@@ -4,17 +4,16 @@ import { User, UserStore } from '../models/user'
 import DuplicateRecordErr from "../errors/DuplicateRecordErr";
 import config from "../config";
 import checkAuth from "../middleware/checkAuth";
+import {userCreateValidator} from "../validators/user";
+import {expressValidator} from "../validators/validator";
+import {OrderStore} from "../models/order";
+import {getUserIdFromHeaders} from "./utils";
 
 
-const userRoutes = (app: express.Application) => {
-    app.get('/users', checkAuth,index)
-    app.get('/users/{:id}',checkAuth, show)
-    app.post('/users', create)
-    app.delete('/users/{:id}',checkAuth, destroy)
-    app.post('/users/auth', authenticate)
-}
+
 
 const store = new UserStore()
+const ordersStore = new OrderStore()
 
 const index = async (_req: Request, res: Response) => {
     const users = await store.index()
@@ -22,14 +21,37 @@ const index = async (_req: Request, res: Response) => {
 }
 
 const show = async (_req: Request, res: Response) => {
-    const user = await store.show(_req.body.id)
+    const user = await store.show(_req.params.id)
     res.json(user)
 }
+const myOrders = async (req: Request, res: Response) => {
+    const userId = req.params.id
+    if (userId != getUserIdFromHeaders(req)){
+        return res.status(403).json({
+            "message":"user not auth"
+        })
+    }
+    const orders = await ordersStore.getUserOrders(userId)
+    res.json(orders)
+}
 
-const create = async (_req: Request, res: Response) => {
+const create = async (req: Request, res: Response) => {
+
+    //todo change it to be middleware
+    const errors = expressValidator(req)
+    if (errors.length > 0) {
+        return res.status(400).json({
+            method: req.method,
+            status: res.statusCode,
+            error: errors
+        })
+    }
+
     const user: User = {
-        username: _req.body.username,
-        password: _req.body.password,
+        username: req.body.username,
+        password: req.body.password,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
     }
     try {
         const newUser = await store.create(user)
@@ -55,7 +77,7 @@ const create = async (_req: Request, res: Response) => {
 }
 
 const destroy = async (_req: Request, res: Response) => {
-    const deleted = await store.delete(_req.body.id)
+    const deleted = await store.delete(_req.params.id)
     res.json(deleted)
 }
 
@@ -78,5 +100,12 @@ const authenticate = async (_req: Request, res: Response) => {
         })
     }
 }
-
+const userRoutes = (app: express.Application) => {
+    app.get('/users', checkAuth,index)
+    app.get('/users/:id',checkAuth, show)
+    app.get('/users/:id/orders',checkAuth, myOrders)
+    app.post('/users', userCreateValidator(),create)
+    app.delete('/users/:id',checkAuth, destroy)
+    app.post('/users/auth', authenticate)
+}
 export default userRoutes
