@@ -3,8 +3,11 @@ import path from "path";
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
-
-const envFound = dotenv.config();
+let envFilePath = path.join(__dirname,"..",path.sep,"..",path.sep,".env");
+if (process.env.NODE_ENV == "testing") {
+    envFilePath = path.join(__dirname,"..",path.sep,"..",path.sep,".env-testing")
+}
+const envFound = dotenv.config({path: envFilePath});
 if (envFound.error) {
     // This error should crash whole process
 
@@ -29,12 +32,12 @@ export default {
 
     uploads: "uploads",
     thumbnails: path.join("uploads", "thumb"),
-    db:{
-        host:process.env.DB_HOST,
-        user:process.env.POSTGRES_USER,
-        password:process.env.POSTGRES_PASSWORD,
-        database:process.env.POSTGRES_DB
+    db: {
+        host: process.env.DB_HOST,
+        user: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB
     },
-    application_name:"shopping-service",
-    TOKEN_SECRET:process.env.TOKEN_SECRET||"hamda"
+    application_name: "shopping-service",
+    TOKEN_SECRET: process.env.TOKEN_SECRET || "hamda"
 };

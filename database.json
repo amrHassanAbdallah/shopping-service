@@ -5,5 +5,12 @@
     "password": "hamda",
     "host": "localhost",
     "database": "shopping-service"
+  },
+  "test": {
+    "driver": "pg",
+    "user": "hamda",
+    "password": "hamda",
+    "host": "localhost",
+    "database": "shopping-service"
   }
 }

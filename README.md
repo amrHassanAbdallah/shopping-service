@@ -25,7 +25,9 @@ Make sure to run postgresql first, then update the database.json & .env files wi
    ```
 
 ## Usage
-
+### Database schema
+![db schema](db-schema.png)
+### APIs
 1. Create a user
     ```bash
     curl --location --request POST 'localhost:3000/users' \

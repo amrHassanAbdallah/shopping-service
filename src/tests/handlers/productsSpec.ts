@@ -1,0 +1,17 @@
+import supertest from "supertest";
+import fs from "fs";
+import path from "path";
+import {app} from "../../server";
+
+
+const request = supertest(app);
+
+describe("Test products listing", () => {
+  it("should return 200 even if there is no record", async (done) => {
+    // Test if the test file is exist
+    request
+      .get("/products/")
+      .expect(200)
+      .end((error) => (error ? done.fail(error) : done()));
+  });
+});

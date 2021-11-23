@@ -4,7 +4,7 @@ import productsRoutes from "./handlers/products";
 import userRoutes from "./handlers/users";
 import * as dotenv from "dotenv";
 import ordersRoutes from "./handlers/orders";
-dotenv.config({ path: __dirname+'/.env' });
+
 
 const app: express.Application = express()
 const address: string = "0.0.0.0:3000"
@@ -18,3 +18,4 @@ ordersRoutes(app)
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`)
 })
+export { app };
