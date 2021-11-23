@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
 import { User, UserStore } from '../models/user'
-import DuplicateRecordErr from "../errors/DuplicateRecordErr";
+import duplicateRecordErr from "../errors/duplicateRecordErr";
 import config from "../config";
 import checkAuth from "../middleware/checkAuth";
 import {userCreateValidator} from "../validators/user";
@@ -63,7 +63,7 @@ const create = async (req: Request, res: Response) => {
         })
 
     } catch(err) {
-        if (err instanceof DuplicateRecordErr){
+        if (err instanceof duplicateRecordErr){
             return res.status(err.statusCode).json({
                 message:err.message
             })

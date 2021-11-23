@@ -1,6 +1,6 @@
 import Client from '../database'
 import bcrypt from 'bcrypt'
-import DuplicateRecordErr from "../errors/DuplicateRecordErr";
+import duplicateRecordErr from "../errors/duplicateRecordErr";
 
 const saltRounds = process.env.SALT_ROUNDS||""
 const pepper = process.env.BCRYPT_PASSWORD||""
@@ -67,7 +67,7 @@ export class UserStore {
         } catch(err:any) {
             //todo adjust it to be interface.
             if (err.code == 23505){
-                throw new DuplicateRecordErr()
+                throw new duplicateRecordErr()
             }
             throw new Error(`unable create user (${u.username}): ${err}`)
         }

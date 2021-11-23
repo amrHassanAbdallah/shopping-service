@@ -30,7 +30,7 @@ export class OrderStore {
 
             return result.rows
         } catch (err) {
-            throw new Error(`Could not get products. Error: ${err}`)
+            throw err
         }
     }
 
