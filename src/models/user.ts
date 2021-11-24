@@ -79,7 +79,6 @@ export class UserStore {
             const sql = 'DELETE FROM users WHERE id=($1)'
 
             const result = await conn.query(sql, [id])
-
             const product = result.rows[0]
 
             conn.release()

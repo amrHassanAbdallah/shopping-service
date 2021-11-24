@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "build": "npx tsc",
+    "build": "rm -rf ./build && npx tsc",
     "jasmine": "jasmine",
     "test": "NODE_ENV=testing npm run build && NODE_ENV=testing npm run jasmine",
     "tsc": "tsc",

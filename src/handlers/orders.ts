@@ -43,16 +43,14 @@ const create = async (req: Request, res: Response) => {
         res.json(err)
     }
 }
-/*
-
-const destroy = async (req: Request, res: Response) => {
-    const deleted = await store.delete(req.params.id)
-    res.json(deleted)
+const destroy = async (_req: Request, res: Response) => {
+    const deleted = await store.delete(_req.params.id)
+    return res.status(204).json(deleted)
 }
-*/
 
 const ordersRoutes = (app: express.Application) => {
     app.post('/orders/', checkAuth,orderCreateValidator(), create)
+    app.post('/orders/', checkAuth, destroy)
 /*
     app.get('/orders/:id', show)
     app.delete('/orders/:id', destroy)

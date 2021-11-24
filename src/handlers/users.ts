@@ -55,12 +55,11 @@ const create = async (req: Request, res: Response) => {
     }
     try {
         const newUser = await store.create(user)
-        res.json({
-            "token":jwt.sign({user:newUser},config.TOKEN_SECRET,{
-                expiresIn: "1h"
-            })
-
+        newUser["token"] = jwt.sign({user:newUser},config.TOKEN_SECRET,{
+            expiresIn: "1h"
         })
+
+        res.json(newUser)
 
     } catch(err) {
         if (err instanceof duplicateRecordErr){
@@ -78,7 +77,7 @@ const create = async (req: Request, res: Response) => {
 
 const destroy = async (_req: Request, res: Response) => {
     const deleted = await store.delete(_req.params.id)
-    res.json(deleted)
+    return res.status(204).json(deleted)
 }
 
 const authenticate = async (_req: Request, res: Response) => {
