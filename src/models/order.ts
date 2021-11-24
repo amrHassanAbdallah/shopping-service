@@ -37,16 +37,21 @@ export class OrderStore {
 
 
     async create(b: Order): Promise<Order> {
-        const sql = 'INSERT INTO orders (status, user_id ,products) VALUES($1, $2,$3) RETURNING *'
+        try {
+            const sql = 'INSERT INTO orders (status, user_id ,products) VALUES($1, $2,$3) RETURNING *'
 
-        // @ts-ignore
-        const conn = await Client.connect()
-        let values = [OrderStatus.Active, b.user_id, JSON.stringify(b.products)]
-        const result = await conn.query(sql, values)
-        const res = result.rows[0]
-        conn.release()
+            // @ts-ignore
+            const conn = await Client.connect()
+            let values = [OrderStatus.Active, b.user_id, JSON.stringify(b.products)]
+            const result = await conn.query(sql, values)
+            const res = result.rows[0]
+            conn.release()
 
-        return res
+            return res
+        }catch (e) {
+            throw e
+        }
+
     }
 
     async delete(id: string): Promise<Order> {

@@ -1,7 +1,7 @@
 import supertest from "supertest";
-import {app} from "../server";
+import {app} from "../../server";
 import {AuthUserResponse} from "./productsSpec";
-import orders from "../handlers/orders";
+import orders from "../../handlers/orders";
 
 
 const request = supertest(app);
