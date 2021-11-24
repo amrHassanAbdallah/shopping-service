@@ -15,3 +15,12 @@ describe("Test products listing", () => {
       .end((error) => (error ? done.fail(error) : done()));
   });
 });
+describe("Test products creation", () => {
+  it("should return 403 when there is no auth", async (done) => {
+    // Test if the test file is exist
+    request
+        .post("/products/")
+        .expect(403)
+        .end((error) => (error ? done.fail(error) : done()));
+  });
+});
